@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <title>Bonvoy Passport</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper:#f7f7f5;
+      --card:#ffffff;
+      --ink:#1c1c1c;
+      --muted:#60605d;
+      --line:#d7d7d3;
+      --soft-line:#e9e9e6;
+      --coral:#ff9662;
+      --coral-soft:#fff0e8;
+      --coral-ink:#713117;
+      --chip:#eeeeeb;
+      --scrim:rgba(247,247,245,.94);
+      --shadow:rgba(0,0,0,.12);
+      --danger:#9d2b32;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper:#0d0d0c;
+        --card:#1b1b19;
+        --ink:#fffdf9;
+        --muted:#d8d5cf;
+        --line:#85817a;
+        --soft-line:#5f5c57;
+        --coral:#ff9b6a;
+        --coral-soft:#4b281a;
+        --coral-ink:#ffe0d1;
+        --chip:#34322f;
+        --scrim:rgba(13,13,12,.97);
+        --shadow:rgba(0,0,0,.66);
+        --danger:#ffadb1;
+      }
+    }
+    :root[data-theme="light"] {
+      --paper:#f7f7f5;
+      --card:#ffffff;
+      --ink:#1c1c1c;
+      --muted:#60605d;
+      --line:#d7d7d3;
+      --soft-line:#e9e9e6;
+      --coral:#ff9662;
+      --coral-soft:#fff0e8;
+      --coral-ink:#713117;
+      --chip:#eeeeeb;
+      --scrim:rgba(247,247,245,.94);
+      --shadow:rgba(0,0,0,.12);
+      --danger:#9d2b32;
+    }
+    :root[data-theme="dark"] {
+      --paper:#0d0d0c;
+      --card:#1b1b19;
+      --ink:#fffdf9;
+      --muted:#d8d5cf;
+      --line:#85817a;
+      --soft-line:#5f5c57;
+      --coral:#ff9b6a;
+      --coral-soft:#4b281a;
+      --coral-ink:#ffe0d1;
+      --chip:#34322f;
+      --scrim:rgba(13,13,12,.97);
+      --shadow:rgba(0,0,0,.66);
+      --danger:#ffadb1;
+    }
+    *{box-sizing:border-box}
+    html{background:var(--paper);scroll-behavior:smooth}
+    body{margin:0;min-width:320px;background:var(--paper);color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    button,input{font:inherit;color:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid color-mix(in srgb,var(--coral) 60%,transparent);outline-offset:2px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .shell{width:min(100%,1080px);margin:0 auto;padding:max(20px,env(safe-area-inset-top)) 16px calc(52px + env(safe-area-inset-bottom))}
+    .hero{display:grid;gap:22px;padding:10px 0 28px;border-bottom:1px solid var(--line)}
+    .brand-signature{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand-signature img{display:block;width:138px;height:auto;filter:grayscale(1) contrast(1.15)}
+    @media (prefers-color-scheme:dark){.brand-signature img,.brand-mark img{filter:grayscale(1) invert(1) brightness(2)}}
+    :root[data-theme="light"] .brand-signature img,:root[data-theme="light"] .brand-mark img,:root[data-theme="light"] .sheet-logo img{filter:grayscale(1) contrast(1.14)}
+    :root[data-theme="dark"] .brand-signature img,:root[data-theme="dark"] .brand-mark img,:root[data-theme="dark"] .sheet-logo img{filter:grayscale(1) invert(1) brightness(2)}
+    .hero-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+    .edition-note{font-size:12px;font-weight:650;color:var(--muted)}
+    .theme-toggle{min-height:34px;padding:0 11px;border:1px solid var(--line);border-radius:2px;background:var(--card);color:var(--ink);font-size:12px;font-weight:700;white-space:nowrap}
+    .theme-toggle:hover{border-color:var(--ink)}
+    .hero-main{display:grid;grid-template-columns:112px 1fr;align-items:center;gap:22px}
+    .progress{--p:0;width:112px;height:112px;padding:7px;border-radius:50%;background:conic-gradient(var(--coral) calc(var(--p)*1%),var(--line) 0)}
+    .progress-inner{height:100%;border-radius:50%;display:grid;place-content:center;text-align:center;background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+    .progress strong{display:block;font-size:38px;line-height:.9;font-weight:500;letter-spacing:-.05em}
+    .progress span{display:block;margin-top:7px;color:var(--muted);font-size:11px;font-weight:700}
+    .hero-copy p:first-child{margin:0 0 8px;color:var(--coral);font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+    h1{margin:0;max-width:570px;font-size:clamp(31px,7vw,52px);line-height:.98;font-weight:400;letter-spacing:-.045em}
+    .hero-copy p:last-child{margin:12px 0 0;max-width:570px;color:var(--muted);font-size:14px;line-height:1.5}
+    .session-note{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:14px 0 0;border-top:1px solid var(--soft-line)}
+    .session-note p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
+    .file-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+    .quiet-button,.import-label{min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:var(--card);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}
+    .quiet-button:hover,.import-label:hover{border-color:var(--ink)}
+    .quiet-button.danger{color:var(--danger)}
+    .insights{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:30px;margin-top:24px;padding:21px 0 23px;border-bottom:1px solid var(--line)}
+    .insights-kicker{margin:0 0 8px;color:var(--coral);font-size:11px;font-weight:750;letter-spacing:.11em;text-transform:uppercase}
+    .insight-title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 14px}
+    .insight-title-row h2{margin:0;font-size:clamp(25px,4vw,34px);line-height:1.05;font-weight:500;letter-spacing:-.035em}
+    .insight-basis{color:var(--muted);font-size:11px;font-weight:700}
+    .archetype-copy{max-width:540px;margin:10px 0 15px;color:var(--muted);font-size:14px;line-height:1.55}
+    .preference-signals{display:flex;flex-wrap:wrap;gap:7px 16px;color:var(--muted);font-size:11px}
+    .preference-signals span{display:inline-flex;align-items:baseline;gap:5px}
+    .preference-signals span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--coral)}
+    .preference-signals strong{color:var(--ink);font-size:12px}
+    .next-stamps{min-width:0;padding-left:30px;border-left:1px solid var(--line)}
+    .suggestion-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:5px}
+    .suggestion-head h3{margin:0;font-size:18px;font-weight:500;letter-spacing:-.015em}
+    .suggestion-head a{color:var(--ink);font-size:12px;font-weight:700;text-underline-offset:3px;white-space:nowrap}
+    .suggestion-list{display:grid}
+    .suggestion-item{min-width:0;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:11px;padding:10px 0;border-top:1px solid var(--soft-line);color:var(--ink);text-decoration:none}
+    .suggestion-item:first-child{border-top:0}
+    .suggestion-item:hover .suggestion-action{text-decoration:underline}
+    .suggestion-logo{width:44px;height:36px;display:grid;place-items:center;padding:3px;background:var(--card)}
+    .suggestion-logo img{display:block;max-width:100%;max-height:30px;object-fit:contain;filter:grayscale(1) contrast(1.14)}
+    :root[data-theme="dark"] .suggestion-logo img{filter:grayscale(1) invert(1) brightness(2)}
+    .suggestion-copy{min-width:0}
+    .suggestion-copy strong{display:block;font-size:13px;line-height:1.25}
+    .suggestion-copy small{display:block;margin-top:3px;color:var(--muted);font-size:11px;line-height:1.35}
+    .suggestion-action{font-size:11px;font-weight:750;white-space:nowrap}
+    .suggestion-note{margin:7px 0 0;color:var(--muted);font-size:11px;line-height:1.45}
+    .controls{position:sticky;z-index:5;top:0;padding:12px 0 14px;background:var(--scrim);backdrop-filter:blur(10px)}
+    .search{min-height:48px;display:grid;grid-template-columns:24px 1fr auto;align-items:center;padding:0 10px 0 14px;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+    .search svg{width:16px;height:16px;color:var(--muted)}
+    .search input{width:100%;min-width:0;border:0;outline:0;background:transparent;font-size:16px}
+    .search input::placeholder{color:var(--muted)}
+    .clear-search{width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-size:21px;line-height:1}
+    .filter-row{display:grid;grid-template-columns:repeat(3,1fr);margin-top:9px;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+    .filter-row button{min-height:40px;border:0;border-right:1px solid var(--line);background:transparent;color:var(--muted);font-size:13px;font-weight:700}
+    .filter-row button:last-child{border-right:0}
+    .filter-row button[aria-pressed="true"]{background:var(--coral);color:#1c1c1c}
+    .ledger{padding-top:2px}
+    .category{margin-top:27px}
+    .category-heading{display:flex;align-items:baseline;justify-content:space-between;padding:0 1px 9px;border-bottom:1px solid var(--ink)}
+    .category-heading h2{margin:0;font-size:21px;line-height:1.2;font-weight:500;letter-spacing:-.025em}
+    .category-heading span{color:var(--muted);font-size:12px;font-weight:750;font-variant-numeric:tabular-nums}
+    .brand-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+    .brand-card{position:relative;min-height:137px;display:grid;grid-template-rows:62px auto;gap:9px;align-content:center;padding:14px 11px 12px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card);text-align:center}
+    .brand-card:hover{background:color-mix(in srgb,var(--card) 90%,var(--chip))}
+    .brand-card:active{background:var(--chip)}
+    .brand-card.stamped{background:color-mix(in srgb,var(--coral-soft) 70%,var(--card))}
+    .brand-mark{position:relative;width:100%;height:62px;display:grid;place-items:center}
+    .brand-mark img{display:block;width:auto;height:auto;max-width:calc(100% - 16px);max-height:52px;object-fit:contain;object-position:center;filter:grayscale(1) contrast(1.14)}
+    .brand-card[data-slug="ritz-carlton-reserve"] .brand-mark img{max-width:100%;max-height:46px}
+    .brand-card[data-slug="luxury-collection"] .brand-mark img{max-height:58px}
+    .stamp-seal{position:absolute;right:0;bottom:-2px;width:26px;height:26px;display:none;place-items:center;border:2px solid var(--card);border-radius:50%;background:var(--coral);color:#1c1c1c;font-size:14px;font-weight:900;box-shadow:0 2px 6px var(--shadow)}
+    .stamped .stamp-seal{display:grid}
+    .brand-name{display:block;font-size:13px;line-height:1.24;font-weight:650}
+    .brand-status{display:block;margin-top:4px;color:var(--muted);font-size:11px;font-weight:600}
+    .stamped .brand-status{color:var(--coral-ink);font-weight:750}
+    .empty{display:none;min-height:220px;place-content:center;text-align:center;color:var(--muted)}
+    .empty.show{display:grid}
+    .empty strong{color:var(--ink);font-size:20px;font-weight:500}
+    .empty p{margin:6px 0 0;font-size:13px}
+    .footer{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:38px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+    .footer span{margin-right:auto;font-weight:700}
+    .footer a{color:var(--ink);text-underline-offset:3px}
+    .sheet-layer{position:fixed;z-index:20;inset:0;display:none;align-items:flex-end;justify-content:center;padding-top:max(24px,env(safe-area-inset-top));background:rgba(0,0,0,.62)}
+    .sheet-layer.open{display:flex}
+    .sheet{width:min(100%,660px);max-height:91dvh;overflow-y:auto;overscroll-behavior:contain;padding:8px 18px calc(22px + env(safe-area-inset-bottom));border-radius:8px 8px 0 0;background:var(--card);box-shadow:0 -15px 50px rgba(0,0,0,.26)}
+    .sheet-handle{width:42px;height:3px;margin:2px auto 15px;background:var(--line)}
+    .sheet-header{display:grid;grid-template-columns:86px 1fr 40px;gap:14px;align-items:center;padding-bottom:18px}
+    .sheet-logo{width:86px;height:64px;display:grid;place-items:center;padding:7px;border:1px solid var(--line);background:var(--card)}
+    .sheet-logo img{display:block;width:auto;height:auto;max-width:100%;max-height:48px;object-fit:contain;filter:grayscale(1) contrast(1.14)}
+    @media (prefers-color-scheme:dark){.sheet-logo img{filter:grayscale(1) invert(1) brightness(2)}}
+    .sheet-header p{margin:0 0 4px;color:var(--coral);font-size:10px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
+    .sheet-header h2{margin:0;font-size:23px;line-height:1.08;font-weight:500;letter-spacing:-.025em}
+    .sheet-header small{display:block;margin-top:4px;color:var(--muted)}
+    .sheet-close{align-self:start;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--muted);font-size:23px}
+    .brand-page-link{min-height:42px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 15px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:var(--card);color:var(--ink);font-size:12px;font-weight:750;text-decoration:none}
+    .brand-page-link:hover{border-color:var(--ink)}
+    .brand-page-link span{font-size:15px}
+    .stay-history{padding:15px 0 2px;border-top:1px solid var(--line)}
+    .stay-history h3,.stay-form h3{margin:0;font-size:18px;font-weight:500}
+    .stay-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+    .stay-row strong{display:block;font-size:14px}.stay-row span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+    .remove-stay{min-height:34px;padding:0 10px;border:1px solid var(--line);border-radius:2px;background:transparent;color:var(--danger);font-size:12px;font-weight:700}
+    .stay-form{padding-top:17px}.stay-form h3{margin-bottom:13px}
+    .stay-form label{display:block;min-width:0}.stay-form label>span{display:block;margin:0 0 6px;font-size:12px;font-weight:700}.stay-form em{color:var(--muted);font-size:11px;font-style:normal;font-weight:500}
+    .stay-form input{width:100%;min-height:46px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:var(--card);color:var(--ink);font-size:16px}.stay-form input::placeholder{color:var(--muted);opacity:.72}
+    .form-row{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    .stamp-button{width:100%;min-height:50px;margin-top:17px;border:0;border-radius:2px;background:var(--coral);color:#1c1c1c;font-weight:750}
+    @media (min-width:620px){.form-row{grid-template-columns:1fr 1fr}}
+    @media (max-width:460px){.stay-row{grid-template-columns:1fr}.remove-stay{justify-self:start}}
+    .toast{position:fixed;z-index:30;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);width:max-content;max-width:calc(100vw - 32px);padding:11px 16px;border-radius:2px;background:var(--ink);color:var(--paper);box-shadow:0 10px 32px var(--shadow);font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease}
+    .toast.show{opacity:1;transform:translate(-50%,-4px)}
+    @media (min-width:680px){
+      .shell{padding-left:26px;padding-right:26px}.hero{padding-top:18px}.hero-main{grid-template-columns:145px 1fr;gap:32px}.progress{width:145px;height:145px}.progress strong{font-size:52px}.brand-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.brand-card{min-height:148px;padding-left:18px;padding-right:18px}
+    }
+    @media (min-width:940px){.brand-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.session-note{grid-template-columns:minmax(0,570px) 1fr}}
+    @media (max-width:680px){.insights{grid-template-columns:1fr;gap:20px}.next-stamps{padding:20px 0 0;border-top:1px solid var(--line);border-left:0}}
+    @media (max-width:560px){.hero-main{grid-template-columns:96px 1fr;gap:16px}.progress{width:96px;height:96px}.progress strong{font-size:32px}.session-note{grid-template-columns:1fr}.file-actions{justify-content:flex-start}.quiet-button,.import-label{flex:1}.brand-signature img{width:122px}.edition-note{font-size:11px}.suggestion-head{align-items:flex-start;flex-direction:column;gap:5px}.suggestion-item{grid-template-columns:40px minmax(0,1fr) auto;gap:9px}.suggestion-logo{width:40px}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toast{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero" aria-labelledby="passport-title">
+      <div class="brand-signature">
+        <img src="data:image/png;base64,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" alt="Marriott Bonvoy">
+        <div class="hero-tools">
+          <span class="edition-note">40-brand passport</span>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">Dark mode</button>
+        </div>
+      </div>
+      <div class="hero-main">
+        <div class="progress" id="progressRing" aria-label="0 of 40 brands stamped"><div class="progress-inner"><strong id="count">0</strong><span>OF 40</span></div></div>
+        <div class="hero-copy">
+          <p>Brands unlocked</p>
+          <h1 id="passport-title">Every stay leaves a mark.</h1>
+          <p id="progressCopy">Tap a brand to add your first stamp. Tap it again to remove the stamp.</p>
+        </div>
+      </div>
+      <div class="session-note">
+        <p>This shareable edition keeps stamps only while the page is open. Download your passport file to keep your progress, then import it next time.</p>
+        <div class="file-actions">
+          <button class="quiet-button" id="downloadButton" type="button">Download passport</button>
+          <label class="import-label" for="importFile">Import passport</label>
+          <input class="sr-only" id="importFile" type="file" accept="application/json,.json">
+          <button class="quiet-button danger" id="resetButton" type="button">Clear all</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="insights" aria-labelledby="archetypeTitle">
+      <div class="archetype-panel" aria-live="polite">
+        <p class="insights-kicker">Your travel pattern</p>
+        <div class="insight-title-row">
+          <h2 id="archetypeTitle">Passport Newcomer</h2>
+          <span class="insight-basis" id="archetypeBasis">No stays analyzed yet</span>
+        </div>
+        <p class="archetype-copy" id="archetypeCopy">Add stays and your passport will reveal the travel style showing up most often.</p>
+        <div class="preference-signals" id="preferenceSignals" aria-label="Preference signals"><span><strong>Start anywhere</strong> Your first stamp sets the pattern</span></div>
+      </div>
+      <div class="next-stamps">
+        <div class="suggestion-head">
+          <h3>Good next stamps</h3>
+          <a href="https://www.marriott.com/brands.mi" target="_blank" rel="noreferrer">All brands</a>
+        </div>
+        <div class="suggestion-list" id="suggestionList"></div>
+        <p class="suggestion-note">Suggestions use your unstamped brands. Availability and rates are checked on Marriott.</p>
+      </div>
+    </section>
+
+    <section class="controls" aria-label="Find and filter brands">
+      <label class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.3 15.3 5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="sr-only">Search brands</span>
+        <input id="searchInput" type="search" placeholder="Find a brand" autocomplete="off">
+        <button class="clear-search" id="clearSearch" type="button" aria-label="Clear brand search" hidden>×</button>
+      </label>
+      <div class="filter-row" role="group" aria-label="Brand status filter">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="stamped" aria-pressed="false">Stamped</button>
+        <button type="button" data-filter="open" aria-pressed="false">Open</button>
+      </div>
+    </section>
+
+    <div class="ledger" id="ledger"></div>
+    <div class="empty" id="emptyState"><strong>No brands found</strong><p>Try another search or status filter.</p></div>
+
+    <footer class="footer">
+      <span>Marriott Bonvoy brand portfolio</span>
+      <a href="https://help.marriott.com/s/article/marriott-hotel-brands" target="_blank" rel="noreferrer">Brand guide</a>
+      <a href="https://www.marriott.com/loyalty/earn/hotels.mi" target="_blank" rel="noreferrer">Earning guide</a>
+    </footer>
+  </main>
+  <div class="sheet-layer" id="sheetLayer" aria-hidden="true">
+    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <header class="sheet-header">
+        <div class="sheet-logo" aria-hidden="true"><img id="sheetLogo" src="data:image/png;base64,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" alt=""></div>
+        <div><p id="sheetCategory"></p><h2 id="sheetTitle"></h2><small id="sheetCount"></small></div>
+        <button class="sheet-close" id="sheetClose" type="button" aria-label="Close stay details">×</button>
+      </header>
+      <a class="brand-page-link" id="brandPageLink" href="https://www.marriott.com/brands.mi" target="_blank" rel="noreferrer">Explore this brand on Marriott <span aria-hidden="true">↗</span></a>
+      <div class="stay-history" id="stayHistory"></div>
+      <form class="stay-form" id="stayForm">
+        <h3 id="formTitle">Stamp this brand</h3>
+        <label><span>Hotel name <em>optional</em></span><input id="hotelInput" maxlength="120" placeholder="Hotel or property name"></label>
+        <div class="form-row">
+          <label><span>City <em>optional</em></span><input id="cityInput" maxlength="120" placeholder="City or place"></label>
+          <label><span>Stay date <em>optional</em></span><input id="dateInput" type="date"></label>
+        </div>
+        <button class="stamp-button" type="submit">Stamp passport</button>
+      </form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="text/disabled">
+    (function(){
+      var categories=["Luxury","Premium","Select","Longer stays","Collections"];
+      var brands=[
+        ["bvlgari-hotels-resorts","Bvlgari Hotels & Resorts","Luxury"],["edition","EDITION","Luxury"],["jw-marriott","JW Marriott","Luxury"],["ritz-carlton","The Ritz-Carlton","Luxury"],["ritz-carlton-reserve","Ritz-Carlton Reserve","Luxury"],["st-regis","St. Regis","Luxury"],["luxury-collection","The Luxury Collection","Luxury"],["w-hotels","W Hotels","Luxury"],
+        ["delta-hotels","Delta Hotels","Premium"],["gaylord-hotels","Gaylord Hotels","Premium"],["le-meridien","Le Méridien","Premium"],["marriott-hotels","Marriott Hotels","Premium"],["marriott-vacation-club","Marriott Vacation Club","Premium"],["renaissance","Renaissance Hotels","Premium"],["sheraton","Sheraton","Premium"],["westin","Westin","Premium"],
+        ["ac-hotels","AC Hotels","Select"],["aloft","Aloft Hotels","Select"],["citizenm","citizenM","Select"],["city-express","City Express","Select"],["courtyard","Courtyard","Select"],["fairfield","Fairfield by Marriott","Select"],["four-points","Four Points by Sheraton","Select"],["four-points-flex","Four Points Flex","Select"],["moxy","Moxy Hotels","Select"],["protea-hotels","Protea Hotels","Select"],["series-by-marriott","Series by Marriott","Select"],["springhill-suites","SpringHill Suites","Select"],
+        ["apartments-by-marriott-bonvoy","Apartments by Marriott Bonvoy","Longer stays"],["element","Element Hotels","Longer stays"],["homes-villas","Homes & Villas","Longer stays"],["marriott-executive-apartments","Marriott Executive Apartments","Longer stays"],["residence-inn","Residence Inn","Longer stays"],["studiores","StudioRes","Longer stays"],["towneplace-suites","TownePlace Suites","Longer stays"],
+        ["autograph-collection","Autograph Collection","Collections"],["design-hotels","Design Hotels","Collections"],["mgm-collection","MGM Collection","Collections"],["outdoor-collection","Outdoor Collection","Collections"],["tribute-portfolio","Tribute Portfolio","Collections"]
+      ].map(function(b){return {slug:b[0],name:b[1],category:b[2]}});
+      var state={stamped:new Set(),filter:"all",search:""};
+      var ledger=document.getElementById("ledger");
+      var count=document.getElementById("count");
+      var ring=document.getElementById("progressRing");
+      var progressCopy=document.getElementById("progressCopy");
+      var empty=document.getElementById("emptyState");
+      var toast=document.getElementById("toast");
+      var search=document.getElementById("searchInput");
+      var clearSearch=document.getElementById("clearSearch");
+      var toastTimer;
+
+      function esc(value){return value.replace(/[&<>\"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]})}
+      function showToast(message){clearTimeout(toastTimer);toast.textContent=message;toast.classList.add("show");toastTimer=setTimeout(function(){toast.classList.remove("show")},1800)}
+      function updateProgress(){
+        var total=brands.length, unlocked=state.stamped.size, pct=Math.round(unlocked/total*100);
+        count.textContent=String(unlocked);ring.style.setProperty("--p",String(pct));ring.setAttribute("aria-label",unlocked+" of "+total+" brands stamped");
+        progressCopy.textContent=unlocked===0?"Tap a brand to add your first stamp. Tap it again to remove the stamp.":unlocked===total?"Every brand is stamped. Your passport is complete.":(total-unlocked)+" brands are still waiting for a stamp.";
+      }
+      function render(){
+        var needle=state.search.trim().toLocaleLowerCase(), visible=0, html="";
+        categories.forEach(function(category){
+          var group=brands.filter(function(brand){
+            var isStamped=state.stamped.has(brand.slug);
+            var statusOK=state.filter==="all"||(state.filter==="stamped"&&isStamped)||(state.filter==="open"&&!isStamped);
+            return brand.category===category&&statusOK&&(!needle||brand.name.toLocaleLowerCase().indexOf(needle)!==-1);
+          });
+          if(!group.length)return;
+          visible+=group.length;
+          var categoryTotal=brands.filter(function(b){return b.category===category}).length;
+          var categoryStamped=brands.filter(function(b){return b.category===category&&state.stamped.has(b.slug)}).length;
+          html+='<section class="category" aria-labelledby="category-'+category.replace(/\s/g,"-")+'"><div class="category-heading"><h2 id="category-'+category.replace(/\s/g,"-")+'">'+esc(category)+'</h2><span>'+categoryStamped+'/'+categoryTotal+'</span></div><div class="brand-grid">';
+          group.forEach(function(brand){var marked=state.stamped.has(brand.slug);html+='<button type="button" class="brand-card'+(marked?' stamped':'')+'" data-slug="'+brand.slug+'" aria-pressed="'+marked+'" aria-label="'+esc(brand.name)+(marked?', stamped':', open')+'"><span class="brand-mark" aria-hidden="true"><img src="assets/'+brand.slug+'.png" alt=""><span class="stamp-seal">✓</span></span><span><strong class="brand-name">'+esc(brand.name)+'</strong><small class="brand-status">'+(marked?'Stamped':'Tap to stamp')+'</small></span></button>'});
+          html+='</div></section>';
+        });
+        ledger.innerHTML=html;empty.classList.toggle("show",visible===0);updateProgress();
+      }
+      ledger.addEventListener("click",function(event){
+        var card=event.target.closest(".brand-card");if(!card)return;
+        var slug=card.getAttribute("data-slug"),brand=brands.find(function(item){return item.slug===slug});
+        if(state.stamped.has(slug)){state.stamped.delete(slug);showToast(brand.name+" stamp removed")}else{state.stamped.add(slug);showToast(brand.name+" stamped")}
+        render();
+      });
+      document.querySelector(".filter-row").addEventListener("click",function(event){
+        var button=event.target.closest("button[data-filter]");if(!button)return;
+        state.filter=button.getAttribute("data-filter");document.querySelectorAll("[data-filter]").forEach(function(item){item.setAttribute("aria-pressed",String(item===button))});render();
+      });
+      search.addEventListener("input",function(){state.search=search.value;clearSearch.hidden=!search.value;render()});
+      clearSearch.addEventListener("click",function(){search.value="";state.search="";clearSearch.hidden=true;search.focus();render()});
+      document.getElementById("downloadButton").addEventListener("click",function(){
+        var payload={format:"bonvoy-passport",version:1,exported_at:new Date().toISOString(),stamped_brands:Array.from(state.stamped).sort()};
+        var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bonvoy-passport.json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},0);showToast("Passport file downloaded");
+      });
+      document.getElementById("importFile").addEventListener("change",function(event){
+        var file=event.target.files&&event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){
+          try{var data=JSON.parse(String(reader.result));if(data.format!=="bonvoy-passport"||!Array.isArray(data.stamped_brands))throw new Error("invalid");var valid=new Set(brands.map(function(b){return b.slug}));state.stamped=new Set(data.stamped_brands.filter(function(slug){return valid.has(slug)}));render();showToast("Passport imported")}
+          catch(error){showToast("That passport file could not be read")}
+          event.target.value="";
+        };reader.onerror=function(){showToast("That passport file could not be read")};reader.readAsText(file);
+      });
+      document.getElementById("resetButton").addEventListener("click",function(){
+        if(state.stamped.size===0){showToast("Passport is already clear");return}state.stamped.clear();render();showToast("All stamps cleared");
+      });
+      render();
+    })();
+  </script>
+  <script>
+    (function(){
+      var categories=["Luxury","Premium","Select","Longer stays","Collections"];
+      var brands=[
+        ["bvlgari-hotels-resorts","Bvlgari Hotels & Resorts","Luxury"],["edition","EDITION","Luxury"],["jw-marriott","JW Marriott","Luxury"],["ritz-carlton","The Ritz-Carlton","Luxury"],["ritz-carlton-reserve","Ritz-Carlton Reserve","Luxury"],["st-regis","St. Regis","Luxury"],["luxury-collection","The Luxury Collection","Luxury"],["w-hotels","W Hotels","Luxury"],
+        ["delta-hotels","Delta Hotels","Premium"],["gaylord-hotels","Gaylord Hotels","Premium"],["le-meridien","Le Méridien","Premium"],["marriott-hotels","Marriott Hotels","Premium"],["marriott-vacation-club","Marriott Vacation Club","Premium"],["renaissance","Renaissance Hotels","Premium"],["sheraton","Sheraton","Premium"],["westin","Westin","Premium"],
+        ["ac-hotels","AC Hotels","Select"],["aloft","Aloft Hotels","Select"],["citizenm","citizenM","Select"],["city-express","City Express","Select"],["courtyard","Courtyard","Select"],["fairfield","Fairfield by Marriott","Select"],["four-points","Four Points by Sheraton","Select"],["four-points-flex","Four Points Flex","Select"],["moxy","Moxy Hotels","Select"],["protea-hotels","Protea Hotels","Select"],["series-by-marriott","Series by Marriott","Select"],["springhill-suites","SpringHill Suites","Select"],
+        ["apartments-by-marriott-bonvoy","Apartments by Marriott Bonvoy","Longer stays"],["element","Element Hotels","Longer stays"],["homes-villas","Homes & Villas","Longer stays"],["marriott-executive-apartments","Marriott Executive Apartments","Longer stays"],["residence-inn","Residence Inn","Longer stays"],["studiores","StudioRes","Longer stays"],["towneplace-suites","TownePlace Suites","Longer stays"],
+        ["autograph-collection","Autograph Collection","Collections"],["design-hotels","Design Hotels","Collections"],["mgm-collection","MGM Collection","Collections"],["outdoor-collection","Outdoor Collection","Collections"],["tribute-portfolio","Tribute Portfolio","Collections"]
+      ].map(function(b){return {slug:b[0],name:b[1],category:b[2]}});
+      var brandUrls={
+        "bvlgari-hotels-resorts":"http://www.bulgarihotels.com/en_US/",
+        "edition":"https://www.editionhotels.com/",
+        "jw-marriott":"https://www.jw-marriott.marriott.com/",
+        "ritz-carlton":"https://www.ritzcarlton.com/",
+        "ritz-carlton-reserve":"https://www.ritzcarlton.com/en/reserve",
+        "st-regis":"https://st-regis.marriott.com/",
+        "luxury-collection":"https://www.the-luxury-collection.marriott.com/",
+        "w-hotels":"https://w-hotels.marriott.com/",
+        "delta-hotels":"https://delta-hotels.marriott.com/",
+        "gaylord-hotels":"https://www.gaylordhotels.com/",
+        "le-meridien":"https://le-meridien.marriott.com/",
+        "marriott-hotels":"https://www.marriott-hotels.marriott.com/",
+        "marriott-vacation-club":"https://www.themarriottvacationclubs.marriott.com/",
+        "renaissance":"https://www.marriott.com/brands/renaissance.mi",
+        "sheraton":"https://sheraton.marriott.com/",
+        "westin":"https://westin.marriott.com/",
+        "ac-hotels":"https://www.marriott.com/brands/ac-hotels.mi",
+        "aloft":"https://www.marriott.com/brands/aloft.mi",
+        "citizenm":"https://www.marriott.com/brands/citizenm.mi",
+        "city-express":"https://www.marriott.com/brands/city-express.mi",
+        "courtyard":"https://www.marriott.com/brands/courtyard-by-marriott.mi",
+        "fairfield":"https://www.marriott.com/brands/fairfield-by-marriott.mi",
+        "four-points":"https://www.marriott.com/brands/four-points-by-sheraton.mi",
+        "four-points-flex":"https://www.marriott.com/brands/four-points-flex.mi",
+        "moxy":"https://www.marriott.com/brands/moxy-hotels.mi",
+        "protea-hotels":"https://protea.marriott.com/",
+        "series-by-marriott":"https://www.marriott.com/brands/series-by-marriott.mi",
+        "springhill-suites":"https://www.marriott.com/brands/springhill-suites.mi",
+        "apartments-by-marriott-bonvoy":"https://www.marriott.com/brands/apartments-by-marriott-bonvoy.mi",
+        "element":"https://element-hotels.marriott.com/",
+        "homes-villas":"https://homes-and-villas.marriott.com/",
+        "marriott-executive-apartments":"https://www.marriott.com/brands/executive-apartments.mi",
+        "residence-inn":"https://www.marriott.com/brands/residence-inn.mi",
+        "studiores":"https://www.marriott.com/brands/studiores.mi",
+        "towneplace-suites":"https://www.marriott.com/brands/towneplace-suites.mi",
+        "autograph-collection":"https://autograph-hotels.marriott.com/",
+        "design-hotels":"https://design-hotels.marriott.com/",
+        "mgm-collection":"https://www.marriott.com/brands/mgm-collection.mi",
+        "outdoor-collection":"https://www.marriott.com/brands/outdoor-collection.mi",
+        "tribute-portfolio":"https://tribute-portfolio.marriott.com/"
+      };
+      brands.forEach(function(brand){brand.url=brandUrls[brand.slug]});
+      var state={stays:[],filter:"all",search:"",selected:null};
+      var ledger=document.getElementById("ledger"),count=document.getElementById("count"),ring=document.getElementById("progressRing"),progressCopy=document.getElementById("progressCopy"),empty=document.getElementById("emptyState"),toast=document.getElementById("toast"),search=document.getElementById("searchInput"),clearSearch=document.getElementById("clearSearch");
+      var sheetLayer=document.getElementById("sheetLayer"),sheetTitle=document.getElementById("sheetTitle"),sheetLogo=document.getElementById("sheetLogo"),sheetCategory=document.getElementById("sheetCategory"),sheetCount=document.getElementById("sheetCount"),stayHistory=document.getElementById("stayHistory"),stayForm=document.getElementById("stayForm"),hotelInput=document.getElementById("hotelInput"),cityInput=document.getElementById("cityInput"),dateInput=document.getElementById("dateInput"),formTitle=document.getElementById("formTitle");
+      var archetypeTitle=document.getElementById("archetypeTitle"),archetypeBasis=document.getElementById("archetypeBasis"),archetypeCopy=document.getElementById("archetypeCopy"),preferenceSignals=document.getElementById("preferenceSignals"),suggestionList=document.getElementById("suggestionList"),brandPageLink=document.getElementById("brandPageLink");
+      var allBrandsUrl="https://www.marriott.com/brands.mi";
+      var profiles={
+        "Luxury":{title:"The Occasion Curator",copy:"You gravitate toward high-touch stays, distinctive design, and trips where the hotel is part of the occasion."},
+        "Premium":{title:"The Polished Regular",copy:"You favor full-service comfort and dependable polish, with enough personality to keep repeat travel from feeling routine."},
+        "Select":{title:"The Agile Explorer",copy:"You collect destinations efficiently, choosing flexible, lively stays that keep the trip moving."},
+        "Longer stays":{title:"The Settled-In Traveler",copy:"You value room to live, practical comforts, and stays that work well beyond a quick check-in."},
+        "Collections":{title:"The Independent Collector",copy:"You seek one-of-a-kind properties and local character over a single predictable formula."}
+      };
+      var toastTimer,themeOverride=false,themeQuery=window.matchMedia("(prefers-color-scheme: dark)"),themeToggle=document.getElementById("themeToggle");
+      function applyTheme(theme){document.documentElement.setAttribute("data-theme",theme);themeToggle.setAttribute("aria-pressed",String(theme==="dark"));themeToggle.textContent=theme==="dark"?"Light mode":"Dark mode"}
+      applyTheme(themeQuery.matches?"dark":"light");
+      themeToggle.addEventListener("click",function(){themeOverride=true;applyTheme(document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark")});
+      if(themeQuery.addEventListener)themeQuery.addEventListener("change",function(event){if(!themeOverride)applyTheme(event.matches?"dark":"light")});
+      function esc(value){return String(value).replace(/[&<>\"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]})}
+      function stayCount(slug){return state.stays.filter(function(s){return s.brand_slug===slug}).length}
+      function unlockedSet(){return new Set(state.stays.map(function(s){return s.brand_slug}))}
+      function showToast(message){clearTimeout(toastTimer);toast.textContent=message;toast.classList.add("show");toastTimer=setTimeout(function(){toast.classList.remove("show")},1800)}
+      function formatDate(value){if(!value)return "Date not added";var parts=value.split("-");if(parts.length!==3)return value;return new Intl.DateTimeFormat(undefined,{month:"short",day:"numeric",year:"numeric"}).format(new Date(Number(parts[0]),Number(parts[1])-1,Number(parts[2])))}
+      function updateInsights(){
+        var marked=unlockedSet(),scores={};
+        categories.forEach(function(category){scores[category]={category:category,brands:0,stays:0,score:0}});
+        brands.forEach(function(brand){if(marked.has(brand.slug))scores[brand.category].brands+=1});
+        state.stays.forEach(function(stay){var brand=brands.find(function(item){return item.slug===stay.brand_slug});if(brand)scores[brand.category].stays+=1});
+        var ranked=categories.map(function(category){var item=scores[category];item.score=item.brands*3+item.stays;return item}).sort(function(a,b){return b.score-a.score||categories.indexOf(a.category)-categories.indexOf(b.category)});
+        var totalStays=state.stays.length,dominant=ranked[0].category,isBalanced=marked.size>1&&ranked[0].score===ranked[1].score;
+        if(!marked.size){archetypeTitle.textContent="Passport Newcomer";archetypeBasis.textContent="No stays analyzed yet";archetypeCopy.textContent="Add stays and your passport will reveal the travel style showing up most often."}
+        else if(isBalanced){archetypeTitle.textContent="The Portfolio Explorer";archetypeBasis.textContent=totalStays+" "+(totalStays===1?"stay":"stays")+" · "+marked.size+" "+(marked.size===1?"brand":"brands");archetypeCopy.textContent="Your passport crosses travel styles instead of settling into one lane. Variety is the clearest preference so far."}
+        else{archetypeTitle.textContent=profiles[dominant].title;archetypeBasis.textContent=totalStays+" "+(totalStays===1?"stay":"stays")+" · "+marked.size+" "+(marked.size===1?"brand":"brands");archetypeCopy.textContent=profiles[dominant].copy}
+        var active=ranked.filter(function(item){return item.stays>0}).slice(0,3);
+        preferenceSignals.innerHTML=active.length?active.map(function(item){return '<span><strong>'+item.stays+' '+(item.stays===1?'stay':'stays')+'</strong> '+esc(item.category)+'</span>'}).join(""):'<span><strong>Start anywhere</strong> Your first stamp sets the pattern</span>';
+        var open=brands.filter(function(brand){return !marked.has(brand.slug)});
+        if(!open.length){suggestionList.innerHTML='<a class="suggestion-item" href="'+allBrandsUrl+'" target="_blank" rel="noreferrer"><span class="suggestion-logo" aria-hidden="true"><img src="data:image/png;base64,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" alt=""></span><span class="suggestion-copy"><strong>Keep exploring</strong><small>Your 40-brand passport is complete. Browse Marriott for a return visit.</small></span><span class="suggestion-action">Browse ↗</span></a>';return}
+        var starters={"Luxury":"edition","Premium":"westin","Select":"moxy","Longer stays":"residence-inn","Collections":"autograph-collection"},picks=[];
+        function addFrom(category){var preferred=open.find(function(brand){return brand.category===category&&brand.slug===starters[category]})||open.find(function(brand){return brand.category===category});if(preferred&&picks.indexOf(preferred)===-1)picks.push(preferred)}
+        if(!marked.size){["Select","Collections","Longer stays"].forEach(addFrom)}
+        else{addFrom(dominant);ranked.slice().sort(function(a,b){return a.brands-b.brands||categories.indexOf(a.category)-categories.indexOf(b.category)}).forEach(function(item){if(picks.length<3)addFrom(item.category)})}
+        open.forEach(function(brand){if(picks.length<3&&picks.indexOf(brand)===-1)picks.push(brand)});
+        suggestionList.innerHTML=picks.slice(0,3).map(function(brand){var reason=!marked.size?({"Luxury":"A high-touch first stamp.","Premium":"A full-service first stamp.","Select":"A flexible first stamp.","Longer stays":"A spacious first stamp.","Collections":"A distinctive first stamp."}[brand.category]):brand.category===dominant?"Matches your strongest "+dominant.toLocaleLowerCase()+" signal.":"Adds a "+brand.category.toLocaleLowerCase()+" dimension to your passport.";return '<a class="suggestion-item" href="'+brand.url+'" target="_blank" rel="noreferrer" aria-label="Explore the official '+esc(brand.name)+' page"><span class="suggestion-logo" aria-hidden="true"><img src="assets/'+brand.slug+'.png" alt=""></span><span class="suggestion-copy"><strong>'+esc(brand.name)+'</strong><small>'+esc(reason)+'</small></span><span class="suggestion-action">Explore ↗</span></a>'}).join("")
+      }
+      function updateProgress(){var unlocked=unlockedSet().size,total=brands.length,pct=Math.round(unlocked/total*100);count.textContent=String(unlocked);ring.style.setProperty("--p",String(pct));ring.setAttribute("aria-label",unlocked+" of "+total+" brands stamped");progressCopy.textContent=unlocked===0?"Tap a brand to add your first stay.":unlocked===total?"Every brand is stamped. Your passport is complete.":(total-unlocked)+" brands are still waiting for a stamp."}
+      function render(){
+        var marked=unlockedSet(),needle=state.search.trim().toLocaleLowerCase(),visible=0,html="";
+        categories.forEach(function(category){
+          var group=brands.filter(function(brand){var isStamped=marked.has(brand.slug),statusOK=state.filter==="all"||(state.filter==="stamped"&&isStamped)||(state.filter==="open"&&!isStamped);return brand.category===category&&statusOK&&(!needle||brand.name.toLocaleLowerCase().indexOf(needle)!==-1)});
+          if(!group.length)return;visible+=group.length;
+          var categoryTotal=brands.filter(function(b){return b.category===category}).length,categoryStamped=brands.filter(function(b){return b.category===category&&marked.has(b.slug)}).length;
+          html+='<section class="category" aria-labelledby="category-'+category.replace(/\s/g,"-")+'"><div class="category-heading"><h2 id="category-'+category.replace(/\s/g,"-")+'">'+esc(category)+'</h2><span>'+categoryStamped+'/'+categoryTotal+'</span></div><div class="brand-grid">';
+          group.forEach(function(brand){var total=stayCount(brand.slug),isStamped=total>0;html+='<button type="button" class="brand-card'+(isStamped?' stamped':'')+'" data-slug="'+brand.slug+'" aria-label="'+esc(brand.name)+', '+(isStamped?(total+" "+(total===1?"stay":"stays")):"not stamped")+'"><span class="brand-mark" aria-hidden="true"><img src="assets/'+brand.slug+'.png" alt=""><span class="stamp-seal">✓</span></span><span><strong class="brand-name">'+esc(brand.name)+'</strong><small class="brand-status">'+(isStamped?(total+" "+(total===1?"stay":"stays")):"Add a stay")+'</small></span></button>'});
+          html+='</div></section>';
+        });
+        ledger.innerHTML=html;empty.classList.toggle("show",visible===0);updateProgress();updateInsights();
+      }
+      function openSheet(slug){state.selected=brands.find(function(b){return b.slug===slug});if(!state.selected)return;sheetLogo.src="assets/"+state.selected.slug+".png";sheetTitle.textContent=state.selected.name;sheetCategory.textContent=state.selected.category;brandPageLink.href=state.selected.url;brandPageLink.childNodes[0].nodeValue="Explore "+state.selected.name+" ";brandPageLink.setAttribute("aria-label","Explore the official "+state.selected.name+" page");hotelInput.placeholder=state.selected.name;hotelInput.value="";cityInput.value="";dateInput.value="";renderSheet();sheetLayer.classList.add("open");sheetLayer.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";setTimeout(function(){document.getElementById("sheetClose").focus()},0)}
+      function closeSheet(){sheetLayer.classList.remove("open");sheetLayer.setAttribute("aria-hidden","true");document.body.style.overflow="";state.selected=null}
+      function renderSheet(){if(!state.selected)return;var list=state.stays.filter(function(s){return s.brand_slug===state.selected.slug});sheetCount.textContent=list.length?list.length+" "+(list.length===1?"stay":"stays"):"Not stamped";formTitle.textContent=list.length?"Add another stay":"Stamp this brand";if(!list.length){stayHistory.innerHTML="";stayHistory.hidden=true;return}stayHistory.hidden=false;stayHistory.innerHTML='<h3>Stay history</h3>'+list.map(function(stay){var details=[stay.city,formatDate(stay.stay_date)].filter(Boolean).join(" · ");return '<div class="stay-row"><div><strong>'+esc(stay.property_name||state.selected.name)+'</strong><span>'+esc(details||"Details not added")+'</span></div><button class="remove-stay" type="button" data-stay-id="'+esc(stay.id)+'">Remove</button></div>'}).join("")}
+      ledger.addEventListener("click",function(event){var card=event.target.closest(".brand-card");if(card)openSheet(card.getAttribute("data-slug"))});
+      document.getElementById("sheetClose").addEventListener("click",closeSheet);sheetLayer.addEventListener("click",function(event){if(event.target===sheetLayer)closeSheet()});document.addEventListener("keydown",function(event){if(event.key==="Escape"&&state.selected)closeSheet()});
+      stayForm.addEventListener("submit",function(event){event.preventDefault();if(!state.selected)return;state.stays.push({id:String(Date.now())+Math.random().toString(16).slice(2),brand_slug:state.selected.slug,property_name:hotelInput.value.trim(),city:cityInput.value.trim(),stay_date:dateInput.value});hotelInput.value="";cityInput.value="";dateInput.value="";render();renderSheet();showToast("Passport stamped")});
+      stayHistory.addEventListener("click",function(event){var button=event.target.closest("[data-stay-id]");if(!button)return;var id=button.getAttribute("data-stay-id");state.stays=state.stays.filter(function(s){return s.id!==id});render();renderSheet();showToast("Stay removed")});
+      document.querySelector(".filter-row").addEventListener("click",function(event){var button=event.target.closest("button[data-filter]");if(!button)return;state.filter=button.getAttribute("data-filter");document.querySelectorAll("[data-filter]").forEach(function(item){item.setAttribute("aria-pressed",String(item===button))});render()});
+      search.addEventListener("input",function(){state.search=search.value;clearSearch.hidden=!search.value;render()});clearSearch.addEventListener("click",function(){search.value="";state.search="";clearSearch.hidden=true;search.focus();render()});
+      document.getElementById("downloadButton").addEventListener("click",function(){var payload={format:"bonvoy-passport",version:2,exported_at:new Date().toISOString(),stays:state.stays};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="bonvoy-passport.json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},0);showToast("Passport file downloaded")});
+      document.getElementById("importFile").addEventListener("change",function(event){var file=event.target.files&&event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(String(reader.result)),valid=new Set(brands.map(function(b){return b.slug})),next=[];if(data.format!=="bonvoy-passport")throw new Error("invalid");if(Array.isArray(data.stays)){next=data.stays.filter(function(s){return s&&valid.has(s.brand_slug)}).map(function(s,i){return {id:String(s.id||Date.now()+"-"+i),brand_slug:s.brand_slug,property_name:String(s.property_name||"").slice(0,120),city:String(s.city||"").slice(0,120),stay_date:/^\d{4}-\d{2}-\d{2}$/.test(s.stay_date||"")?s.stay_date:""}})}else if(Array.isArray(data.stamped_brands)){next=data.stamped_brands.filter(function(slug){return valid.has(slug)}).map(function(slug,i){return {id:String(Date.now()+i),brand_slug:slug,property_name:"",city:"",stay_date:""}})}else throw new Error("invalid");state.stays=next;render();showToast("Passport imported")}catch(error){showToast("That passport file could not be read")}event.target.value=""};reader.onerror=function(){showToast("That passport file could not be read")};reader.readAsText(file)});
+      document.getElementById("resetButton").addEventListener("click",function(){if(!state.stays.length){showToast("Passport is already clear");return}state.stays=[];render();showToast("All stays cleared")});
+      render();
+    })();
+  </script>
+</body>
+</html>
